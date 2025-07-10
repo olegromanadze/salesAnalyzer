@@ -7,11 +7,11 @@ Sale = namedtuple('Sale', ['order_id', 'product_name', 'quantity', 'unit_price',
 
 def parse_row(row):
     try:
-        order_id     = int(row['order_id'])
+        order_id = int(row['order_id'])
         product_name = row['product_name'].strip()
-        quantity     = int(row['quantity'])
-        unit_price   = float(row['unit_price'])
-        order_date   = datetime.strptime(row['order_date'], '%Y-%m-%d').date()
+        quantity = int(row['quantity'])
+        unit_price = float(row['unit_price'])
+        order_date = datetime.strptime(row['order_date'], '%Y-%m-%d').date()
     except (KeyError, ValueError):
         return None
     if quantity <= 0 or unit_price <= 0:
@@ -33,10 +33,10 @@ def read_sales(file_path):
 
 def aggregate_sales(sales):
     by_product = defaultdict(int)
-    by_date    = defaultdict(float)
+    by_date = defaultdict(float)
     for s in sales:
         by_product[s.product_name] += s.quantity
-        by_date[s.order_date]     += s.quantity * s.unit_price
+        by_date[s.order_date] += s.quantity * s.unit_price
     return by_product, by_date
 
 def write_reports(by_product, by_date):
@@ -58,7 +58,7 @@ def main():
     top3 = sorted(by_product.items(), key=lambda x: x[1], reverse=True)[:3]
     print("Топ-3 продуктов:")
     for name, qty in top3:
-        print(f"  {name}: {qty}")
+        print(f"{name}: {qty}")
 
     # День с максимальной выручкой
     best_day, max_rev = max(by_date.items(), key=lambda x: x[1])
